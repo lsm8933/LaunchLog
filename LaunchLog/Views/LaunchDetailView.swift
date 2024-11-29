@@ -20,7 +20,15 @@ struct LaunchDetailView: View {
     var body: some View {
         Group {
             // When network status is back to normal: revert to using vm's model. Network 429: use hard-coded launchDetail object.
-            if let launchDetail = vm.launchDetail {
+            if vm.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .controlSize(.large)
+            } else if vm.errorMessage != "" {
+                Text(vm.errorMessage)
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.red)
+            } else if let launchDetail = vm.launchDetail {
                 
                 ScrollView {
                     // HeaderView

@@ -137,7 +137,6 @@ struct LaunchesView: View {
                     case .loading:
                         ProgressView()
                             .progressViewStyle(.circular)
-                            .font(.system(size: 22))
                             .foregroundStyle(Color.gray)
                     case .endOfData:
                         EmptyView()
