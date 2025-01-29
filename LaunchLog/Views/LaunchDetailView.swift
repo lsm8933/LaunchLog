@@ -13,13 +13,15 @@ import WebKit
 struct LaunchDetailView: View {
     @StateObject var vm: LaunchDetailViewModel
     
+    @State var scale: CGFloat = 1
+    @State var offset: CGFloat = 0
+    
     init(id: String) {
         self._vm = .init(wrappedValue: LaunchDetailViewModel(id: id))
     }
     
     var body: some View {
         Group {
-            // When network status is back to normal: revert to using vm's model. Network 429: use hard-coded launchDetail object.
             if vm.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
@@ -39,7 +41,9 @@ struct LaunchDetailView: View {
                             Color(white: 0.9, opacity: 0.5)
                         }.frame(minWidth: 0, maxWidth: .infinity)
                             .frame(height: 350)
-                            .clipped()
+                            .scaleEffect(scale, anchor: .top)
+                            .offset(y: offset)
+                            //.clipped()
                         
                         VStack(alignment: .leading, spacing: 8) {
                             Spacer()
@@ -84,12 +88,14 @@ struct LaunchDetailView: View {
                     AgencySectionView(agency: launchDetail.launchServiceProvider, agencyType: .launchServiceProvider)
                 }.toolbarBackgroundVisibility(Visibility.hidden, for: ToolbarPlacement.navigationBar)
                     .ignoresSafeArea(edges: Edge.Set.top)
-                
+                    .onScrollGeometryChange(for: CGFloat.self) { scrollGeometry in
+                        -min(0, scrollGeometry.contentOffset.y + scrollGeometry.contentInsets.top)
+                    } action: { oldOffset, newOffset in
+                        offset = -newOffset
+                        scale = 1 + newOffset / 350
+                    }
+
             }
-            // revert comment, if network traffic is back to normal.
-            //            else {
-            //                Text("Oops, looks like we have lost detail of this launch.")
-            //            }
         }
     }
 }

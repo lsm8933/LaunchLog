@@ -126,7 +126,6 @@ struct LaunchesView: View {
                     switch vm.state {
                     case .readyToStart:
                         if vm.launches.count > 0 {
-                            // to do: change to clear
                             Color.clear
                                 .frame(width: 20, height: 10)
                                 .onAppear(perform: { // need List or lazyVStack to fire this call every time it appears on screen. vs ScrollView and ForEach only gets called when they are created.
