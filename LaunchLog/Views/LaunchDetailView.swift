@@ -9,7 +9,6 @@
 import SwiftUI
 import WebKit
 
-// for development purpose, to see preview, put struct LaunchDetailView and preview into LLApp.swift
 struct LaunchDetailView: View {
     @StateObject var vm: LaunchDetailViewModel
     
@@ -246,10 +245,7 @@ struct RocketSectionView: View {
             .cornerRadius(16)
             .padding(.vertical, 4)
             
-            // to do: see more
-            Text(rocket.configuration.description)
-                .font(.system(size: 16))
-                .lineLimit(6)
+            SeeMoreTextView(text: rocket.configuration.description, linelimit: 6, font: UIFont.systemFont(ofSize: 16))
                 .padding(.horizontal, 16)
         }.padding(.bottom, 16)
     }
@@ -300,7 +296,8 @@ struct AgencySectionView: View {
                     image.resizable().scaledToFit()
                 } placeholder: {
                     Color(white: 0.9, opacity: 0.5)
-                }.frame(width: abs(.infinity), height: abs(200))
+                }.frame(height: 200)
+                    .frame(maxWidth: .infinity)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             
@@ -317,9 +314,7 @@ struct AgencySectionView: View {
             }
             
             if let description = agency.description {
-                Text(description)
-                    .font(.system(size: 17))
-                    .lineLimit(5)
+                SeeMoreTextView(text: description, linelimit: 5, font: UIFont.systemFont(ofSize: 17))
             }
         }.padding(.horizontal, 16)
             .padding(.bottom, 16)
@@ -409,10 +404,8 @@ struct MissionSectionView: View {
                     .font(.system(size:16))
                     .foregroundStyle(Color(.darkGray))
             }
-            // to do: see more
-            Text(mission.description)
-                .font(.system(size: 16))
-                .lineLimit(4)
+
+            SeeMoreTextView(text: mission.description, linelimit: 4, font: UIFont.systemFont(ofSize: 16))
         }.padding(.horizontal, 16)
             .padding(.bottom, 16)
     }
